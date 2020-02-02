@@ -34,12 +34,16 @@
 #include <async++.h>
 
 // For posix_memalign/_aligned_malloc
-#ifdef _WIN32
+#if defined(_WIN32)
 # include <malloc.h>
 # ifdef __MINGW32__
 #  define _aligned_malloc __mingw_aligned_malloc
 #  define _aligned_free __mingw_aligned_free
 # endif
+#elif defined(__CYGWIN__)
+# include <malloc.h>
+#  define _aligned_malloc aligned_alloc
+#  define _aligned_free aligned_free
 #else
 # include <stdlib.h>
 #endif

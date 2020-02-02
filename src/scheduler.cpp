@@ -30,7 +30,7 @@ namespace detail {
 
 void* aligned_alloc(std::size_t size, std::size_t align)
 {
-#ifdef _WIN32
+#if defined(_WIN32) || defined(__CYGWIN__)
 	void* ptr = _aligned_malloc(size, align);
 	if (!ptr)
 		LIBASYNC_THROW(std::bad_alloc());
@@ -46,7 +46,7 @@ void* aligned_alloc(std::size_t size, std::size_t align)
 
 void aligned_free(void* addr) LIBASYNC_NOEXCEPT
 {
-#ifdef _WIN32
+#if defined(_WIN32) || defined(__CYGWIN__)
 	_aligned_free(addr);
 #else
 	free(addr);
