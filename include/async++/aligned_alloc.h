@@ -22,10 +22,10 @@ namespace async {
 namespace detail {
 
 // Allocate an aligned block of memory
-LIBASYNC_EXPORT void* aligned_alloc(std::size_t size, std::size_t align);
+LIBASYNC_EXPORT void* async_aligned_alloc(std::size_t size, std::size_t align);
 
 // Free an aligned block of memory
-LIBASYNC_EXPORT void aligned_free(void* addr) LIBASYNC_NOEXCEPT;
+LIBASYNC_EXPORT void async_aligned_free(void* addr) LIBASYNC_NOEXCEPT;
 
 // Class representing an aligned array and its length
 template<typename T, std::size_t Align = std::alignment_of<T>::value>
@@ -41,7 +41,7 @@ public:
 	explicit aligned_array(std::size_t length)
 		: length(length)
 	{
-		ptr = static_cast<T*>(aligned_alloc(length * sizeof(T), Align));
+		ptr = static_cast<T*>(async_aligned_alloc(length * sizeof(T), Align));
 		std::size_t i;
 		LIBASYNC_TRY {
 			for (i = 0; i < length; i++)
@@ -49,7 +49,7 @@ public:
 		} LIBASYNC_CATCH(...) {
 			for (std::size_t j = 0; j < i; j++)
 				ptr[i].~T();
-			aligned_free(ptr);
+            async_aligned_free(ptr);
 			LIBASYNC_RETHROW();
 		}
 	}
@@ -74,7 +74,7 @@ public:
 	{
 		for (std::size_t i = 0; i < length; i++)
 			ptr[i].~T();
-		aligned_free(ptr);
+        async_aligned_free(ptr);
 	}
 
 	T& operator[](std::size_t i) const

@@ -28,7 +28,7 @@
 namespace async {
 namespace detail {
 
-void* aligned_alloc(std::size_t size, std::size_t align)
+void* async_aligned_alloc(std::size_t size, std::size_t align)
 {
 #if defined(_WIN32) || defined(__CYGWIN__)
 	void* ptr = _aligned_malloc(size, align);
@@ -44,7 +44,7 @@ void* aligned_alloc(std::size_t size, std::size_t align)
 #endif
 }
 
-void aligned_free(void* addr) LIBASYNC_NOEXCEPT
+void async_aligned_free(void* addr) LIBASYNC_NOEXCEPT
 {
 #if defined(_WIN32) || defined(__CYGWIN__)
 	_aligned_free(addr);

@@ -76,11 +76,11 @@ struct LIBASYNC_CACHELINE_ALIGN task_base: public ref_count_base<task_base, task
 	// Use aligned memory allocation
 	static void* operator new(std::size_t size)
 	{
-		return aligned_alloc(size, LIBASYNC_CACHELINE_SIZE);
+		return async_aligned_alloc(size, LIBASYNC_CACHELINE_SIZE);
 	}
 	static void operator delete(void* ptr)
 	{
-		aligned_free(ptr);
+        async_aligned_free(ptr);
 	}
 
 	// Initialize task state
